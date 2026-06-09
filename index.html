@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jebitha Rini | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Dark Mode (Default) */
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --primary: #3b82f6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --nav-bg: rgba(15, 23, 42, 0.9);
+            --border: rgba(255, 255, 255, 0.1);
+            --chip-bg: rgba(59, 130, 246, 0.1);
+            --accent: #deff9a;
+        }
+
+        /* Light Mode */
+        [data-theme="light"] {
+            --bg-dark: #c6baf3; 
+            --bg-card: #ddc9fa;
+            --primary: #7c3aed; 
+            --text-main: #2e1065;
+            --text-muted: #5b21b6;
+            --nav-bg: rgba(244, 243, 248, 0.95);
+            --border: rgba(201, 192, 218, 0.15);
+            --chip-bg: #ece9ff;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+            transition: background 0.4s ease, color 0.3s ease; 
+        }
+
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 1rem 10%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--nav-bg); backdrop-filter: blur(12px); z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo { font-weight: 700; font-size: 1.3rem; color: var(--primary); letter-spacing: 1px; }
+        .nav-right { display: flex; align-items: center; gap: 1rem; }
+        .nav-links { list-style: none; display: flex; gap: 1.5rem; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; }
+        .nav-links a:hover { color: var(--primary); }
+
+        .theme-toggle, .music-toggle {
+            background: var(--primary); border: none; color: white;
+            padding: 8px 18px; border-radius: 25px; cursor: pointer;
+            font-size: 0.8rem; font-weight: 600; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex; align-items: center; gap: 8px;
+        }
+        
+        .music-toggle { background: var(--bg-card); color: var(--primary); border: 1px solid var(--primary); }
+
+        /* Hero Split Layout */
+        .hero {
+            height: 100vh; display: flex; 
+            justify-content: space-between; align-items: center; 
+            padding: 0 10%; gap: 2rem;
+        }
+
+        .hero-content { flex: 1; text-align: left; }
+        .hero-content h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); margin-bottom: 1rem; }
+        .hero-content p { color: var(--text-muted); font-size: 1.1rem; max-width: 500px; font-weight: 500; }
+        #typing-text { color: var(--primary); border-right: 3px solid var(--primary); padding-right: 8px; }
+
+        .home-socials { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .home-socials a {
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; background: var(--bg-card);
+            border: 1px solid var(--border); border-radius: 10px;
+            transition: 0.3s;
+        }
+        .home-socials a svg { width: 20px; height: 20px; fill: var(--text-muted); }
+        .home-socials a:hover { border-color: var(--primary); transform: translateY(-3px); }
+
+        .hero-image { flex: 1; display: flex; justify-content: flex-end; }
+        .home-profile-container {
+            width: 320px; height: 320px;
+            border-radius: 50%; border: 5px solid var(--primary);
+            overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .home-profile-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Section Styling */
+        .section { padding: 100px 10% 60px; }
+        .section-title { font-size: 2.2rem; margin-bottom: 3rem; text-align: center; }
+        .section-title::after { 
+            content: ''; display: block; width: 50px; height: 4px; 
+            background: var(--primary); margin: 10px auto; border-radius: 2px;
+        }
+
+        /* UPDATED ABOUT SECTION LAYOUT */
+        .about-grid {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+        .about-text {
+            flex: 1.2;
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+        .about-steps {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .step-box {
+            background: var(--bg-card);
+            padding: 1.2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            /* Animation Initial State */
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.5s ease;
+        }
+        .step-box.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .step-box strong {
+            color: var(--primary);
+            display: block;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        .step-box span {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Cards and Grids */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        
+        .info-card { 
+            background: var(--bg-card); padding: 2.5rem; border-radius: 20px; 
+            border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            height: 100%;
+        }
+        .info-card h3 { color: var(--primary); margin-bottom: 1.2rem; font-size: 1.3rem; }
+
+        .skills-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1rem; }
+        .chip { 
+            background: var(--chip-bg); color: var(--primary); 
+            padding: 8px 20px; border-radius: 20px; font-size: 0.85rem; 
+            font-weight: 600; border: 1px solid var(--border); 
+        }
+
+        /* Certifications Grid */
+        .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .cert-card {
+            background: var(--bg-card); border-radius: 15px; border: 1px solid var(--border);
+            overflow: hidden; transition: 0.3s;
+        }
+        .cert-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .cert-img { width: 100%; height: 160px; object-fit: cover; background: #000; }
+        .cert-info { padding: 1.2rem; }
+        .cert-info h4 { font-size: 1rem; color: var(--text-main); margin-bottom: 5px; }
+        .cert-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+        .project-featured {
+            background: var(--bg-card); padding: 2.5rem; border-radius: 25px;
+            border: 1px solid var(--border); margin-bottom: 2rem;
+        }
+
+        footer { text-align: center; padding: 3rem; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--border); }
+
+        @media (max-width: 992px) {
+            .hero { flex-direction: column-reverse; text-align: center; justify-content: center; height: auto; padding-top: 120px; }
+            .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+            .hero-image { justify-content: center; margin-bottom: 2rem; }
+            .nav-links { display: none; }
+            .about-grid { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">JEBITHA RINI P</div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="music-toggle" id="music-btn"><span id="music-icon">▶</span></button>
+            <button class="theme-toggle" id="theme-btn">Theme</button>
+        </div>
+    </nav>
+
+    <audio id="bgMusic" loop><source src="bg-audio.mp3" type="audio/mpeg"></audio>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Hi, I'm <br><span id="typing-text"></span></h1>
+            <p>Engineering Student | Aspiring Fullstack Developer | Hackathon Participant | Beginner Tutor | Passionate Freelancer</p>
+            <div class="home-socials">
+                <a href="https://www.linkedin.com/in/jebitha-rini" target="_blank"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                <a href="https://github.com/JEBITHA-RINI" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="home-profile-container"><img src="profile.png" alt="Profile"></div>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-grid">
+            <div class="about-text">
+                <p>I'm a passionate Computer Science and Engineering student at <strong>Dhirajlal Gandhi College of Technology</strong>, Salem. 
+                    
+                   <p> Currently in my second year, I am steadily building my skills in Java and Web Technologies with a strong interest in creating visually appealing and practical software solutions.</p>
+
+
+
+           <p> I focus on building creative and practical web projects while strengthening my fundamentals in HTML, CSS, JavaScript, and database systems.</p>
+
+                
+                
+            <p> I actively participate in technical events, hackathons, and mini projects, which enhance my problem‑solving and teamwork skills.</p>
+            
+            </div>
+
+            <div class="about-steps">
+                <div class="step-box">
+                    <strong>Institution</strong>
+                    <span>Hindustan College of Technology
+                 Formerly known as Dhirajlal Gandhi College of Technology, Salem</span>
+                </div>
+                <div class="step-box">
+                    <strong>Focus</strong>
+                    <span>Full Stack Developer</span>
+                </div>
+                <div class="step-box">
+                    <strong>Graduation</strong>
+                    <span>2028</span>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="skills">
+        <h2 class="section-title">My Skills</h2>
+        <div class="grid-container">
+            <div class="info-card">
+                <h3>Learning Skills</h3>
+                <div class="skills-container">
+                    <span class="chip">Java</span>
+                    <span class="chip">HTML5</span>
+                    <span class="chip">CSS3</span>
+                    <span class="chip">Javascript</span>
+                    <span class="chip">UI/UX Design</span>
+                </div>
+            </div>
+            <div class="info-card">
+                <h3>Creative Skills</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Singing, learning Keyboard, Video Editing, </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="certifications">
+        <h2 class="section-title">Certifications</h2>
+        <div class="cert-grid">
+            <div class="cert-card">
+                <div class="cert-info"><h4>AI for Beginners</h4><p>HP Life Foundation | 2026</p></div>
+            </div>
+            <div class="cert-card">
+                <div class="cert-info"><h4>Gen AI Literacy</h4><p>Simplilearn SkillUp | 2026</p></div>
+            </div>
+            <div class="cert-card">
+                <div class="cert-info"><h4>Database Management System</h4><p>IIT Kharagpur (NPTEL) | 2026</p></div>
+            </div>
+            <div class="cert-card">
+                <div class="cert-info"><h4>National Level Quiz</h4><p>BIS - World Standards Day | 2025</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="projects">
+        <h2 class="section-title">Projects</h2>
+        <div class="project-featured">
+            <h3 style="color: var(--primary);">Inventory Management System</h3>
+            <p style="margin: 1rem 0; color: var(--text-muted);">Java-based system with JDBC integration for tracking inventory data via NetBeans.</p>
+        </div>
+        <div class="project-featured">
+            <h3 style="color: var(--primary);">Traffic Controller (DFA)</h3>
+            <p style="margin: 1rem 0; color: var(--text-muted);">Theory of Computation project using Deterministic Finite Automata implemented with Arduino Uno.</p>
+            <a href="https://wokwi.com/projects/458487754516730881" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">CLICK HERE</a>
+        </div>
+    </section>
+
+    <section class="section" id="contact">
+        <h2 class="section-title">Contact</h2>
+        <div style="text-align: center; background: var(--bg-card); padding: 3rem; border-radius: 20px; border: 1px solid var(--border);">
+            <p style="font-size: 1.2rem; margin-bottom: 1rem;">Let's work together!</p>
+            <h3 style="color: var(--primary);">jebitharini@gmail.com</h3>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2028 Jebitha Rini | Engineering Student Portfolio</p>
+    </footer>
+
+    <script>
+        // Typing Effect
+        const textElement = document.getElementById('typing-text');
+        const phrases = ["Jebitha Rini.", " an aspiring Full Stack Developer.", " a Curious Learner."];
+        let pIdx = 0, cIdx = 0, isDel = false;
+
+        function type() {
+            const current = phrases[pIdx];
+            textElement.textContent = isDel ? current.substring(0, cIdx--) : current.substring(0, cIdx++);
+            let speed = isDel ? 60 : 130;
+            if (!isDel && cIdx === current.length) { isDel = true; speed = 2000; }
+            else if (isDel && cIdx === 0) { isDel = false; pIdx = (pIdx + 1) % phrases.length; speed = 500; }
+            setTimeout(type, speed);
+        }
+
+        // Theme Toggle
+        const themeBtn = document.getElementById('theme-btn');
+        themeBtn.addEventListener('click', () => {
+            const doc = document.documentElement;
+            const isLight = doc.getAttribute('data-theme') === 'light';
+            doc.setAttribute('data-theme', isLight ? 'dark' : 'light');
+        });
+
+        // Music Toggle
+        const musicBtn = document.getElementById('music-btn');
+        const musicIcon = document.getElementById('music-icon');
+        const bgMusic = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) { bgMusic.pause(); musicIcon.textContent = "▶"; } 
+            else { bgMusic.play().catch(e => console.log(e)); musicIcon.textContent = "⏸"; }
+            isPlaying = !isPlaying;
+        });
+
+        // Intersection Observer for Step Boxes Animation
+        const stepBoxes = document.querySelectorAll('.step-box');
+        const stepObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    // Trigger animation one by one
+                    stepBoxes.forEach((box, index) => {
+                        setTimeout(() => {
+                            box.classList.add('show');
+                        }, index * 200);
+                    });
+                }
+            });
+        }, { threshold: 0.2 });
+
+        stepObserver.observe(document.querySelector('.about-steps'));
+
+        document.addEventListener('DOMContentLoaded', type);
+    </script>
+</body>
+</html>
